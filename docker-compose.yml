@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  cron-back:
+    build: .
+    environment:
+      MONGO_URI: "mongodb://host.docker.internal:27017/"
+
+
+    ports:
+      - "3000:3000"
+#      - "3000-3010:3000"
+    volumes:
+      - .:/usr/src/backend
+
+      - /usr/src/backend/node_modules

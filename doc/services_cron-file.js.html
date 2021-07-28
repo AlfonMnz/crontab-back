@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/cron-file.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/cron-file.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Entity Services NameSpace
+ * @namespace Entity.Services
+ */
+const {folders: {default_log_path}} = require('../../infrastructure/config/index');
+/**
+ * Cron File Service
+ * @param fs - The FS library
+ * @param pathLibrary - The Path Library
+ * @param taskParser
+ * @param exec
+ * @param cronParser
+ * @constructor
+ * @memberOf Entity.Services
+ */
+const CronFile = ({fs, pathLibrary, taskParser, exec, cronParser}) => {
+    return {
+        /**
+         * Create the cron file in the path
+         * @param name
+         * @param path
+         * @param tasks
+         * @return void
+         * @memberOf Entity.Services.CronFile
+         */
+        createCronFile: ({name, path, tasks}) => {
+            const writeStream = fs.createWriteStream(pathLibrary.join(path, `crontab.${name.split(' ').join('-')}`));
+            for (const task of tasks) {
+                writeStream.write(`${taskParser.toCrontab({name: name, path: path, ...task.task})}\n`);
+            }
+        },
+        /**
+         * Import a Cron file and create the task
+         * @async
+         * @param filename
+         * @param user
+         * @return {Task[]} arrayCrons
+         * @memberOf Entity.Services.CronFile
+         */
+        importCron: async ({filename, user}) => {
+            let lines = fs.readFileSync(pathLibrary.resolve(__dirname, `../../../crontabs/${filename}`), 'utf-8');
+            lines = lines.split('\n');
+            let namePrefix = new Date().getTime();
+            let arrayCrons = [];
+            lines.forEach((line, index) => {
+                line = line.replace(/\t+/g, ' ');
+                let regex = /^((\@[a-zA-Z]+\s+)|(([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+))/;
+                let command = line.replace(regex, '').trim();
+                let schedule = line.replace(command, '').trim();
+                let is_valid = false;
+                try {
+                    is_valid = cronParser.parseString(line).expressions.length > 0;
+                } catch (e) {
+                    console.log(e)
+                }
+                if (command &amp;&amp; schedule &amp;&amp; is_valid) {
+                    let name = `${namePrefix}_${index}`
+                    arrayCrons.push({name: name, command: command, schedule: schedule, user: user});
+                }
+            });
+            return arrayCrons;
+        },
+        /**
+         * Read the cronfile to import
+         * @return {File} The cron to import
+         * @memberOf Entity.Services.CronFile
+         */
+        getCronToImport: () => {
+            return fs.readdirSync(pathLibrary.resolve(__dirname, '../../../crontabs'));
+        },
+
+        /**
+         * Delete a cronfile
+         * @param {String} path - Path of the cron
+         * @param {String} name - Name of the file
+         * @memberOf Entity.Services.CronFile
+         * @return void
+         */
+        deleteCron: ({path, name}) => {
+            fs.unlinkSync(pathLibrary.resolve(__dirname, `${path}/crontab.${name.split(' ').join('-')}`))
+        },
+        /**
+         * Get the log of an cron
+         * @param {Number} id - The id of the cron
+         * @param {String} name - The name of the cron
+         * @return {{log: string[], logStdout: string[]}}
+         * @memberOf Entity.Services.CronFile
+         */
+        getLog: ({id, name}) => {
+            const log = fs.readFileSync(pathLibrary.join(default_log_path, `${id.split('-')[0]}-${name}.log`)).toString().split("\n");
+            const logStdout = fs.readFileSync(pathLibrary.join(default_log_path, `${id.split('-')[0]}-${name}.stdout.log`)).toString().split("\n");
+            return {
+                log: log,
+                logStdout: logStdout
+            }
+        }
+    }
+
+}
+
+module.exports = CronFile</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Entity.html">Entity</a></li><li><a href="Entity.Services.html">Services</a></li></ul><h3>Classes</h3><ul><li><a href="Entity.Services.CronFile.html">CronFile</a></li><li><a href="Entity.html#.User">User</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Jun 04 2021 13:48:48 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

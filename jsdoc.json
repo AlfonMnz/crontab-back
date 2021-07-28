@@ -1,0 +1,25 @@
+{
+  "plugins": [],
+  "source": {
+    "include": [
+      "src"
+    ],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(node_modules|docs)"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "logo": {
+      "url": "",
+      "width": "150px",
+      "height": "13px",
+      "link": "https://github.com/nhnent/tui.jsdoc-template"
+    }
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./doc",
+    "template": "node_modules/tui-jsdoc-template"
+  }
+}

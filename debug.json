@@ -1,0 +1,19 @@
+{
+  "res": {
+    "name": "TEST",
+    "command": "echo \"hola\"",
+    "schedule": "@hourly",
+    "stopped": false,
+    "timestamp": "Mon May 10 2021 13:00:35 GMT+0200 (hora de verano de Europa central)",
+    "logging": "true",
+    "mailing": {},
+    "created": 1620644435085,
+    "saved": false,
+    "_id": "zxFPRkxwUSv8kw5x"
+  },
+  "env_vars": "",
+  "crontab_job_string_command": "((({ echo \"hola\"; } | tee /tmp/zxFPRkxwUSv8kw5x.stdout) 3>&1 1>&2 2>&3 | tee /tmp/zxFPRkxwUSv8kw5x.stderr) 3>&1 1>&2 2>&3); if test -f /tmp/zxFPRkxwUSv8kw5x.stderr; then date >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.log\"; cat /tmp/zxFPRkxwUSv8kw5x.stderr >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.log\"; fi; if test -f /tmp/zxFPRkxwUSv8kw5x.stdout; then date >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.stdout.log\"; cat /tmp/zxFPRkxwUSv8kw5x.stdout >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.stdout.log\"; fi",
+  "crontab_job_string_command_2": "((({ echo \"hola\"; } | tee /tmp/zxFPRkxwUSv8kw5x.stdout) 3>&1 1>&2 2>&3 | tee /tmp/zxFPRkxwUSv8kw5x.stderr) 3>&1 1>&2 2>&3); if test -f /tmp/zxFPRkxwUSv8kw5x.stderr; then date >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.log\"; cat /tmp/zxFPRkxwUSv8kw5x.stderr >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.log\"; fi; if test -f /tmp/zxFPRkxwUSv8kw5x.stdout; then date >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.stdout.log\"; cat /tmp/zxFPRkxwUSv8kw5x.stdout >> \"/home/poliedro/Escritorio/crontab-ui/crontabs/logs/zxFPRkxwUSv8kw5x.stdout.log\"; fi",
+  "stdout": "hola\n",
+  "stderr": ""
+}
